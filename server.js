@@ -1,26 +1,45 @@
-require("dotenv").config();
+const express = require('express');
+const admin = require('firebase-admin');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+//const authRoutes = require('./routes/auth');
+
+//const app = express();
+const port = 5000;
 
 
-const express = require("express");
-const cors = require("cors");
-const admin = require("firebase-admin");
-const authRoutes = require("./routes/auth");  
+const serviceAccount = require('./firebaseConfig.json');
 
-const app = express();
 
-app.use(cors());
-app.use(express.json());
-
-const serviceAccount = require("./firebaseConfig.json");
+if(!admin.apps.length){
+  
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+}else{
+  admin.app();
+}
 
 
-app.use("/api/auth", authRoutes);
+
+//const db = admin.firestore();
+const authRoutes = require('./routes/auth');
+
+const app = express();
 
 
-const PORT = process.env.PORT || 5000;
+app.use(cors());
+app.use(bodyParser.json());
+
+//app.use('/api/auth', authRoutes);
 
 
-app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.use('/api/auth',authRoutes);
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

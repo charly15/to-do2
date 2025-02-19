@@ -12,7 +12,13 @@ const RegisterPage = () => {
       message.success("Usuario registrado. Ahora inicie sesión.");
       navigate("/login");
     } catch (error) {
-      message.error("Error al registrar.");
+      if (error.response) {
+
+        message.error(error.response.data.msg || "Error al registrar.");
+      } else {
+
+        message.error("Error en el servidor.");
+      }
     }
   };
 
@@ -29,7 +35,9 @@ const RegisterPage = () => {
           <Form.Item name="password" label="Contraseña" rules={[{ required: true, message: "Ingrese una contraseña" }]}>
             <Input.Password />
           </Form.Item>
-          <Button type="primary" htmlType="submit" block>Registrarse</Button>
+          <Button type="primary" htmlType="submit" block>
+            Registrarse
+          </Button>
         </Form>
       </Card>
     </div>

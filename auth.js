@@ -1,10 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const admin = require("firebase-admin");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 const db = admin.firestore();
-
 
 router.post("/register", async (req, res) => {
   try {
@@ -19,9 +19,6 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ msg: "Error en el servidor" });
   }
 });
-
-module.exports = router;
-const jwt = require("jsonwebtoken");
 
 router.post("/login", async (req, res) => {
   try {
@@ -42,6 +39,7 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).json({ msg: "Error en el servidor" });
   }
+
 });
 
-module.exports = router;
+module.exports = router; 
